@@ -5,6 +5,7 @@ import com.erp.assurance.tunisie.crm.service.ClientService;
 import com.erp.assurance.tunisie.shared.dto.ApiResponse;
 import com.erp.assurance.tunisie.shared.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RequestMapping("/clients")
 @RequiredArgsConstructor
 @Tag(name = "Client Management", description = "CRM Client CRUD and management operations")
+@SecurityRequirement(name = "Bearer Authentication")
 public class ClientController {
 
     private final ClientService clientService;

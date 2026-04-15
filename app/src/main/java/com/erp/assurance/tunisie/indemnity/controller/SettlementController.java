@@ -6,6 +6,7 @@ import com.erp.assurance.tunisie.indemnity.service.SettlementService;
 import com.erp.assurance.tunisie.shared.dto.ApiResponse;
 import com.erp.assurance.tunisie.shared.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RequestMapping("/settlements")
 @RequiredArgsConstructor
 @Tag(name = "Settlement Management", description = "Indemnity settlement management")
+@SecurityRequirement(name = "Bearer Authentication")
 public class SettlementController {
 
     private final SettlementService settlementService;

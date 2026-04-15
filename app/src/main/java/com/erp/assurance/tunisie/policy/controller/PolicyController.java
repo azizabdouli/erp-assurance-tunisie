@@ -9,6 +9,7 @@ import com.erp.assurance.tunisie.shared.dto.ApiResponse;
 import com.erp.assurance.tunisie.shared.dto.PageResponse;
 import com.erp.assurance.tunisie.shared.enums.PolicyStatus;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @RequestMapping("/policies")
 @RequiredArgsConstructor
 @Tag(name = "Policy Management", description = "Insurance policy management")
+@SecurityRequirement(name = "Bearer Authentication")
 public class PolicyController {
 
     private final PolicyService policyService;

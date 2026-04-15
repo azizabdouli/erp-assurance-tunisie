@@ -5,6 +5,7 @@ import com.erp.assurance.tunisie.accounting.service.JournalService;
 import com.erp.assurance.tunisie.shared.dto.ApiResponse;
 import com.erp.assurance.tunisie.shared.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequestMapping("/accounting")
 @RequiredArgsConstructor
 @Tag(name = "Accounting", description = "Financial accounting operations")
+@SecurityRequirement(name = "Bearer Authentication")
 public class AccountingController {
 
     private final JournalService journalService;

@@ -8,6 +8,7 @@ import com.erp.assurance.tunisie.shared.dto.ApiResponse;
 import com.erp.assurance.tunisie.shared.dto.PageResponse;
 import com.erp.assurance.tunisie.shared.enums.ClaimStatus;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @RequestMapping("/claims")
 @RequiredArgsConstructor
 @Tag(name = "Claims Management", description = "Insurance claims management")
+@SecurityRequirement(name = "Bearer Authentication")
 public class ClaimController {
 
     private final ClaimService claimService;

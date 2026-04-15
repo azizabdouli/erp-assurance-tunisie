@@ -7,6 +7,7 @@ import com.erp.assurance.tunisie.underwriting.dto.ProductRequest;
 import com.erp.assurance.tunisie.underwriting.dto.ProductResponse;
 import com.erp.assurance.tunisie.underwriting.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/products")
 @RequiredArgsConstructor
 @Tag(name = "Product Management", description = "Insurance product management")
+@SecurityRequirement(name = "Bearer Authentication")
 public class ProductController {
 
     private final ProductService productService;

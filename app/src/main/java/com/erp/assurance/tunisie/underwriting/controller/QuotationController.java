@@ -6,6 +6,7 @@ import com.erp.assurance.tunisie.underwriting.dto.QuotationRequest;
 import com.erp.assurance.tunisie.underwriting.dto.QuotationResponse;
 import com.erp.assurance.tunisie.underwriting.service.QuotationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RequestMapping("/quotations")
 @RequiredArgsConstructor
 @Tag(name = "Quotation Management", description = "Insurance quotation management")
+@SecurityRequirement(name = "Bearer Authentication")
 public class QuotationController {
 
     private final QuotationService quotationService;

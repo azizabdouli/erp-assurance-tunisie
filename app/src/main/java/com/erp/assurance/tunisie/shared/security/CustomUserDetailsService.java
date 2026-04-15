@@ -1,24 +1,45 @@
 package com.erp.assurance.tunisie.shared.security;
 
+import com.erp.assurance.tunisie.auth.entity.User;
+import com.erp.assurance.tunisie.auth.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private final UserRepository userRepository;
+
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO: Load from database when user entity is available
-        if ("admin".equals(username)) {
-            return new User("admin", "$2a$10$dummyEncodedPasswordForAdmin",
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        if (!user.isActive()) {
+            throw new UsernameNotFoundException("User account is disabled: " + username);
         }
-        throw new UsernameNotFoundException("User not found: " + username);
+
+        var authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList());
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPasswordHash())
+                .authorities(authorities)
+                .accountExpired(false)
+                .accountLocked(!user.isActive())
+                .credentialsExpired(false)
+                .disabled(!user.isActive())
+                .build();
     }
 }
