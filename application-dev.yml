@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/dev_db
+    username: dev_user
+    password: dev_pass
+  cache:
+    type: caffeine
+  messaging:
+    queue:
+      name: dev-queue
+  security:
+    oauth2:
+      client:
+        registration:
+          oauth:
+            client-id: dev-client-id
+            client-secret: dev-client-secret
+            redirect-uri: http://localhost:8080/login/oauth2/code/dev
+  logging:
+    level:
+      root: INFO
+  openapi:
+    title: Dev API
+    version: 1.0
