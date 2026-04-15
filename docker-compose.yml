@@ -1,0 +1,29 @@
+# Docker Compose File for ERP Assurance Tunisie
+version: '3.8'
+services:
+  app:
+    image: openjdk:11
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - '8080:8080'
+    networks:
+      - erp-network
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: erp_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - erp-network
+volumes:
+  db_data:
+
+networks:
+  erp-network: {}
