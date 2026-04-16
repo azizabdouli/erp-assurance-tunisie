@@ -1,58 +1,58 @@
 package com.erp.assurance.tunisie.crm.entity;
 
-import javax.persistence.*;
-import java.util.UUID;
-import java.util.Date;
+import com.erp.assurance.tunisie.shared.entity.AuditableEntity;
+import com.erp.assurance.tunisie.shared.enums.AmlRiskLevel;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "aml_screenings")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AmlScreening extends AuditableEntity {
 
-    @Id
-    @GeneratedValue
-    private UUID id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
-    @Column(nullable = false)
-    private UUID clientId;
+    @Column(name = "screening_date", nullable = false)
+    private LocalDateTime screeningDate;
 
-    @Column(nullable = false)
-    private Date screeningDate;
-
-    @Column(nullable = false)
+    @Column(name = "screening_provider")
     private String screeningProvider;
 
-    @Column(nullable = false)
-    private boolean pepMatch;
+    @Column(name = "pep_match")
+    @Builder.Default
+    private boolean pepMatch = false;
 
-    @Column(nullable = false)
-    private boolean sanctionMatch;
-
-    @ElementCollection
-    private String[] riskKeywords;
+    @Column(name = "sanction_match")
+    @Builder.Default
+    private boolean sanctionMatch = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ScreeningStatus screeningStatus;
+    @Column(name = "risk_level")
+    private AmlRiskLevel riskLevel;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "screening_status", nullable = false)
+    @Builder.Default
+    private ScreeningStatus screeningStatus = ScreeningStatus.PENDING;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
+    @Column(name = "reviewed_by")
     private String reviewedBy;
 
-    private Date reviewDate;
+    @Column(name = "review_date")
+    private LocalDateTime reviewDate;
 
-    @Enumerated(EnumType.STRING)
-    private ApprovalStatus approvalStatus;
-
-    // Getters and Setters
-}
-
-public enum ScreeningStatus {
-    PASSED,
-    FLAGGED,
-    REJECTED
-}
-
-public enum ApprovalStatus {
-    APPROVED,
-    PENDING,
-    REJECTED
+    public enum ScreeningStatus {
+        PENDING, PASSED, FLAGGED, REJECTED
+    }
 }
