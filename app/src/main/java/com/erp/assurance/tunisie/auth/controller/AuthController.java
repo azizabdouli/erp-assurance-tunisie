@@ -54,6 +54,7 @@ public class AuthController {
 
     @GetMapping("/me")
     @Operation(summary = "Get currently authenticated user")
+    @PreAuthorize("isAuthenticated()")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Current user details"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
