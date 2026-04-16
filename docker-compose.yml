@@ -6,16 +6,22 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
-      - redis
-      - rabbitmq
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/erp_assurance_db
-      SPRING_DATASOURCE_USERNAME: erp_user
-      SPRING_DATASOURCE_PASSWORD: erp_password
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://db:5432/erp_assurance_db
+      DATABASE_USERNAME: erp_user
+      DATABASE_PASSWORD: erp_password
+      REDIS_HOST: redis
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      JWT_SECRET: erp-assurance-tunisie-jwt-secret-key-2024-must-be-at-least-256-bits-long
     networks:
       - erp-network
 
@@ -29,6 +35,11 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U erp_user -d erp_assurance_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - erp-network
 
@@ -36,6 +47,11 @@ services:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - erp-network
 
@@ -44,6 +60,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - erp-network
 
